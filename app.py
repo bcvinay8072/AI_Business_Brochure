@@ -1,7 +1,6 @@
 import os
 import json
 from dotenv import load_dotenv
-from IPython.display import Markdown, display, update_display
 from scraper import fetch_website_links, fetch_website_contents
 from openai import OpenAI
 import markdown
