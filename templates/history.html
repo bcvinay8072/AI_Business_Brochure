@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Brochure History</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="card wide">
+    <h2>📚 Brochure History</h2>
+
+    {% if brochures %}
+      <ul class="history-list">
+        {% for b in brochures %}
+          <li>
+            <b>{{ b.company }}</b>
+            <small>({{ b.tone }})</small><br/>
+            <small>{{ b.created_at.strftime("%Y-%m-%d %H:%M") }}</small><br/>
+            <a href="/history/{{ b.id }}">View</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No brochures yet.</p>
+    {% endif %}
+
+    <a href="/" class="back">⬅ Back</a>
+  </div>
+</body>
+</html>

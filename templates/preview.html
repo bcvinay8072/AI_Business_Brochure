@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Brochure Preview</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="card wide">
+    <h2>✅ Brochure Generated</h2>
+    <p><b>{{ company }}</b> · Tone: <i>{{ tone }}</i></p>
+
+    <div class="preview">
+      {{ preview | safe }}
+    </div>
+
+    <a href="/" class="back">⬅ Create another</a>
+  </div>
+  <div class="actions">
+  <a class="btn" href="/download/markdown/{{ request.path.split('/')[-1] }}">
+    📄 Download Raw PDF
+  </a>
+
+  <a class="btn secondary" href="/download/preview/{{ request.path.split('/')[-1] }}">
+    🖨️ Download Preview PDF
+  </a>
+</div>
+
+</body>
+</html>

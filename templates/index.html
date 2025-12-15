@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Brochure Generator</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- 🔄 Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="status-text">
+      Starting brochure generation…
+    </p>
+  </div>
+
+  <div class="card">
+    <h1>AI Brochure Generator</h1>
+
+    <!-- ❗ Remove action & method, JS handles everything -->
+    <form onsubmit="startGeneration(event)">
+      <label>Company Name</label>
+      <input name="company" required>
+
+      <label>Website URL</label>
+      <input name="url" type="url" required>
+
+      <label>Brochure Tone</label>
+      <select name="tone">
+        <option value="professional">Professional</option>
+        <option value="humorous">Humorous</option>
+      </select>
+
+      <button id="submit-btn" type="submit">
+        Generate Brochure
+      </button>
+    </form>
+    <a href="/history" class="history-btn">
+    📚 View Brochure History
+    </a>
+
+  </div>
+
+  <script>
+  async function startGeneration(event) {
+    event.preventDefault();
+
+    document.getElementById("loading-overlay").style.display = "flex";
+    document.getElementById("submit-btn").disabled = true;
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const res = await fetch("/brochure/start", {
+      method: "POST",
+      body: formData
+    });
+
+    const { task_id } = await res.json();
+
+    const evtSource = new EventSource(`/progress/${task_id}`);
+    const status = document.getElementById("status-text");
+
+    evtSource.onmessage = function (event) {
+      status.innerText = event.data;
+
+      if (event.data.includes("Done")) {
+        evtSource.close();
+        window.location.href = `/result/${task_id}`;
+      }
+    };
+  }
+
+  // Reset loader when navigating back
+  window.addEventListener("pageshow", function () {
+    document.getElementById("loading-overlay").style.display = "none";
+    document.getElementById("submit-btn").disabled = false;
+    document.getElementById("status-text").innerText =
+      "Starting brochure generation…";
+  });
+</script>
+
+
+</body>
+</html>
