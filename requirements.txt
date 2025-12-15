@@ -7,3 +7,4 @@ markdown
 sqlalchemy
 reportlab
 openai
+jinja2
